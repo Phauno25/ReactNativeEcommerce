@@ -1,20 +1,41 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from "react-native";
+import Header from "./src/components/Header";
+import Home from "./src/screens/Home";
+import ItemListCategory from "./src/screens/ItemListCategory";
+import { useFonts } from "expo-font";
+import { useState } from "react";
 
 export default function App() {
+  const [categorySelected, setCategorySelected] = useState();
+
+  const [fontsLoaded] = useFonts({
+    Montserrat: require("./src/assets/fonts/Montserrat-Regular.ttf"),
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <>
+      <Header title={categorySelected ? categorySelected : "Categories"} />
+      {categorySelected ? (
+        <ItemListCategory
+          categorySelected={categorySelected}
+          setCategorySelected={setCategorySelected}
+        />
+      ) : (
+        <Home setCategorySelected={setCategorySelected} />
+      )}
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    fontFamily: "Montserrat",
   },
 });
